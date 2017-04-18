@@ -69,6 +69,14 @@
 				</section>
 
 				<section class="slide">
+					<h3>Compiled?</h3>
+					<p>Sass ➡️ compile ➡️ CSS ➡️ browser</p>
+					<aside class="notes">
+						<p>We'll be looking at this in depth as we go through the workshop today.</p>
+					</aside>
+				</section>
+
+				<section class="slide">
 					<h3>Other CSS Preprocessors</h3>
 					<ul>
 						<li>LESS</li>
@@ -86,6 +94,251 @@
 						<li>Fun!</li>
 					</ul>
 				</section>
+
+				<section class="slide">
+					<h3>What Does Sass Do?</h3>
+					<h4>Some Features Include:</h4>
+					<ul>
+						<li>Variables</li>
+						<li>Selector Nesting</li>
+						<li>Math</li>
+						<li>Mixins</li>
+						<li>Functions</li>
+						<li>"Extends"</li>
+					</ul>
+				</section>
+
+				<section class="slide">
+					<h3>Variables</h3>
+					<pre>
+						<code class="scss" data-trim>
+							$shopping-cart-bg-color: red;
+						</code>
+					</pre>
+					<pre>
+						<code class="scss" data-trim>
+							.shopping-cart {
+								background-color: $shopping-cart-bg-color;
+							}
+						</code>
+					</pre>
+					<pre>
+						<code class="css" data-trim>
+							.shopping-cart {
+								background-color: red;
+							}
+						</code>
+					</pre>
+				</section>
+
+				<section class="slide">
+					<h3>Selector Nesting</h3>
+					<pre>
+						<code class="html" data-trim>
+							<header class="site-header">
+								<div class="site-header__container">
+									<h1 class="site-header__title">GDI Pittsburgh</h1>
+								</div>
+							</header>
+						</code>
+					</pre>
+					<pre>
+						<code class="scss" data-trim>
+							.site-header {
+								.site-header__container {
+									.site-header__title {
+										font-family: Arial, sans-serif;
+										font-size: 2.5em;
+									}
+								}
+							}
+						</code>
+					</pre>
+				</section>
+
+				<section class="slide">
+					<h3>Math</h3>
+					<pre>
+						<code class="scss" data-trim>
+							.sidebar {
+								width: (100 / 4) * 1px;
+							}
+						</code>
+					</pre>
+					<pre>
+						<code class="css" data-trim>
+							.sidebar {
+								width: 25px;
+							}
+						</code>
+					</pre>
+				</section>
+
+				<section class="slide">
+					<h3>Math ("Advanced")</h3>
+					<pre>
+						<code class="scss" data-trim>
+							$main-content-width: 75%;
+						</code>
+					</pre>
+					<pre>
+						<code class="scss" data-trim>
+							.sidebar {
+								width: (100 - $main-content-width);
+							}
+						</code>
+					</pre>
+				</section>
+
+				<section class="slide">
+					<h3>Mixins</h3>
+					<p>A mixin is a block of code that lets us group CSS declarations we may reuse throughout our site.</p>
+				</section>
+
+				<section class="slide">
+					<h3>Mixins</h3>
+					<pre>
+						<code class="css" data-trim>
+							.btn-default {
+								background-color: pink;
+								border-radius: 4px;
+								color: white;
+								display: inline-block;
+								font-size: 1.0em;
+								text-align: center;
+							}
+						</code>
+					</pre>
+				</section>
+
+				<section class="slide">
+					<h3>Mixins</h3>
+					<pre>
+						<code class="scss" data-trim>
+							$button-text-color: white;
+
+							@mixin basic-button {
+								background-color: pink;
+								border-radius: 4px;
+								color: $button-text-color;
+								display: inline-block;
+								font-size: 1.0em;
+								text-align: center;
+							}
+						</code>
+					</pre>
+					<pre>
+						<code class="scss" data-trim>
+							.btn-default {
+								@include basic-button;
+							}
+						</code>
+					</pre>
+				</section>
+
+				<section class="slide">
+					<h3>Mixins</h3>
+					<pre>
+						<code class="css" data-trim>
+							.btn-default {
+								background-color: pink;
+								border-radius: 4px;
+								color: white;
+								display: inline-block;
+								font-size: 1.0em;
+								text-align: center;
+							}
+						</code>
+					</pre>
+				</section>
+
+				<section class="slide">
+					<h3>Mixins - Advanced</h3>
+					<p>Mixins can get complex! You can pass arguments to them.</p>
+				</section>
+
+				<section class="slide">
+					<pre>
+						<code class="scss" data-trim>
+							@mixin gridset($type) {
+								@if $type == 'flex' {
+									display: flex;
+								} @else {
+									display: block;
+								}
+							}
+						</code>
+					</pre>
+					<pre>
+						<code class="scss" data-trim>
+							.gridset {
+								@include gridset(flex);
+							}
+						</code>
+					</pre>
+					<pre>
+						<code class="css" data-trim>
+							.gridset {
+								display: flex;
+							}
+						</code>
+					</pre>
+				</section>
+
+				<section class="slide">
+					<h3>Debugging!</h3>
+					<p>The mixin I just showed has a subtle error in it.</p>
+					<pre>
+						<code class="scss" data-trim>
+							.gridset {
+								@include gridset;
+							}
+						</code>
+					</pre>
+					<pre>
+						<code class="error" data-trim>
+							Mixin gridset is missing argument $type.
+						</code>
+					</pre>
+				</section>
+
+				<section class="slide">
+					<h3>Mixin Refactoring</h3>
+					<pre>
+						<code class="scss" data-trim>
+							@mixin gridset($type: block) {
+								@if $type == 'flex' {
+									display: flex;
+								} @else {
+									display: block;
+								}
+							}
+						</code>
+					</pre>
+					<pre>
+						<code class="scss" data-trim>
+							.gridset {
+								@include gridset;
+							}
+						</code>
+					</pre>
+					<pre>
+						<code class="css" data-trim>
+							.gridset {
+								display: block;
+							}
+						</code>
+					</pre>
+				</section>
+
+				<section class="slide">
+					<h3>Functions</h3>
+				</section>
+
+				<section class="slide">
+					<h3>Extends</h3>
+				</section>
+
 			</div>
 		</div>
 
